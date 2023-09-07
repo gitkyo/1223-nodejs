@@ -24,6 +24,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     /*
     * Exemple d'ajout de donnée avec la méthode insertOne()
+    * Il est préférable d'utiliser à l'avenir des models de donnée
     */
 
     // const db = client.db(databaseName)

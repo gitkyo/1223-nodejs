@@ -23,7 +23,7 @@ const addTasks = async () => {
     const task = new Task({
         description: 'Apprendre Mongoose ORM',
         completed: false
-    });
+    });    
 
     try{
         await task.save()
