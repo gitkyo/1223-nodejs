@@ -1,7 +1,7 @@
 # 1223-nodejs
 
 ## Install
-'''npm install'''
+```npm install```
 
 ## start
-'''node app.js'''
+```node app.js```
