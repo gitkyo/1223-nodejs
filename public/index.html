@@ -6,10 +6,113 @@
     <title>Front nodejs</title>
 </head>
 <body>
+    
+    
+    <h1 id="t1">Mon title</h1>
     coucou c'est le front de mon serveur nodejs
 
 
-    <script>
+    <form action="./index.html">
+        <input type="text" name="name" id="name">
+        <input type="submit" value="Envoyer">        
+    </form>
+
+    <script>       
+
+        //exemple d'écouteur qui fait partie des bonnes pratique, il s'agit d'executer du JS que lorsque la page est totalement chargé - attendre le chargerment du DOM
+        document.addEventListener("DOMContentLoaded", function(event) { 
+            
+            //ici je suis dans le callback, je peux ajouter des instructions                      
+            console.log("DOM entièrement chargé et analysé");
+       
+            //récupérer un élément html
+            let title = document.getElementById("t1");
+            
+            //afficher dans la console de l'objet
+            console.log('mon title : ', title)
+
+            // ex de modification css
+            title.style.color = "red";
+
+            // ex de modification du contenu html
+            title.innerHTML = "nouveau title";
+
+            //creation d'une balise section
+            let section = document.createElement("section");
+
+            //créer un élément html
+            let p = document.createElement("p");
+
+            //ajouter du contenu dans le p
+            p.innerHTML = "coucou c'est un paragraphe créer avec JS";
+
+            //ajouter le p dans la section
+            section.appendChild(p);        
+
+            //ajouter le p dans le body
+            document.body.appendChild(section);
+
+            //creer un bouton
+            let button = document.createElement("button");
+
+            //ajouter du contenu dans le bouton
+            button.innerHTML = "click me";
+            button.style.position = "relative";
+
+            //ajouter un écouteur d'événement sur le bouton de type click
+            button.addEventListener("click", function(event)  {
+
+                //ici this fait référence à l'élément html sur lequel on a cliqué
+                console.log('this', this);
+
+                //je peux manipuler l'élément html sur lequel on a cliqué avec this
+                this.style.color = "red";
+
+                //ici je suis dans le callback, je peux ajouter des instructions
+                console.log("click sur le bouton");                           
+
+            });
+
+            //ajouter le bouton dans le body
+            document.body.appendChild(button);
+
+
+            //usage de preventDefault pour casser le comportement par défaut d'un élément html
+            let form = document.querySelector("form");
+            
+            //ici on detect le submit sur le formulaire
+            form.addEventListener("submit", function(e)  {
+
+                //casser le comportement par défaut du formulaire
+                e.preventDefault();               
+
+            });
+
+            //detect quand on tape sur le clavier la touche "a"
+            document.addEventListener("keydown", function(e)  {
+
+                //si la touche est "a"
+                if(e.key == "z"){
+                    //afficher dans la console
+                    console.log("touche z : avancer");
+
+                    //on déplace de position sur l'axe x le bouton button
+                    button.style.left = button.offsetLeft + 10 + "px";
+
+                }else            
+                if(e.key == "s"){
+                    //afficher dans la console
+                    console.log("touche s : reculer");
+
+                    //on déplace de position sur l'axe x le bouton button
+                    button.style.left = button.offsetLeft - 10 + "px";
+                }               
+
+            });
+
+
+
+        });
      
     </script>
 </body>
