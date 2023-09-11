@@ -35,7 +35,29 @@ const addTasks = async () => {
 
 }
 
-// addTasks();
+//code commenter pour ajouter des taches 
+//addTasks();
+
+//fonction pour ajouter des users
+import {User} from './models/users.js';
+
+const addUsers = async () => {
+    const user = new User({
+        name: 'John',
+        age: 30,
+        email: 'toto@toto.com',
+        password: 'toto1234'
+    });
+
+    try{
+        await user.save()
+        console.log('user ajoute')
+    }catch(e){
+        console.log(e)
+    }
+}
+
+addUsers();
 
 //code pour ajouter une page web front end
 //ici la difficulté est de trouver le chemin absolu du fichier index.html car le chemin relatif ne fonctionne pas avec express et node en mode module
@@ -53,15 +75,6 @@ const publishDirectoryPath = path.join(__dirname, '/public')
 //set public directory - Pas besoin de faire un app.get pour chaque fichier
 app.use(express.static(publishDirectoryPath))
 
-
-/*
-* Dans le même esprit, ajouter un model pour les users
-* et ajouter un user dans la BDD
-*
-* Ajouter une route post pour ajouter un user/tache
-* Ajouter une route get pour récupérer un user/tache
-*/
-    
 //lancement du serveur
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
