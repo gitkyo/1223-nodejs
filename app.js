@@ -1,3 +1,7 @@
+/*
+* PARTIE SUPERIEUR COMPRENANT SOUVENT LES IMPORTS DE DEPENDANCES
+*/
+
 //import express
 import express from 'express';
 
@@ -14,50 +18,109 @@ const app = express();
 //set port, listen for requests
 const PORT = 8080;
 
+//config app to use/parse json
+app.use(express.json())
+
+/*
+* PARTIE CONTROLLER
+*/
+
 //creation d'un model de donnée pour les taches afin de faciliter l'ajout de données
 import {Task} from './models/tasks.js';
 
 //fonction pour ajouter une tache
-const addTasks = async () => {
-
-    const task = new Task({
-        description: 'Apprendre Mongoose ORM',
-        completed: false
-    });    
+const addTasks = async (req, res) => {
+    
+    const task = new Task(req.body)
 
     try{
         await task.save()
-        console.log('tache ajoute')
-
+        res.status(201).send(task)       
     }catch(e){
-        console.log(e)
+        res.status(400).send(e)  
     }
 
 }
 
-//code commenter pour ajouter des taches 
-//addTasks();
+//fonction pour lire les taches
+const getTasks = async (req, res) => {
+    
+    try{
+        const tasks = await Task.find({})
+        res.send(tasks)
+        //Note : ici on pourrai éventuellement envoyer les données dans une vue à l'aide de moteur de template, soit un fichier ejs, soit un fichier pug
+    }catch(e){
+        res.status(500).send()
+    }
+}
 
-//fonction pour ajouter des users
+
+//import d'un model de donnée pour les users afin de faciliter l'ajout de données
 import {User} from './models/users.js';
 
-const addUsers = async () => {
-    const user = new User({
-        name: 'John',
-        age: 30,
-        email: 'toto@toto.com',
-        password: 'toto1234'
-    });
+//fonction pour ajouter un user
+const addUsers = async (req, res) => {
+   
+    const user = new User(req.body)
 
     try{
-        await user.save()
-        console.log('user ajoute')
+        await user.save()        
+        res.status(201).send(user)
+
     }catch(e){
-        console.log(e)
+
+        res.status(400).send(e)  
+
     }
 }
 
-addUsers();
+//fonction pour lire les users
+const getUsers = async (req, res) => {
+
+    try{
+        const users = await User.find({})
+        res.send(users)
+        //Note : ici on pourrai éventuellement envoyer les données dans une vue à l'aide de moteur de template, soit un fichier ejs, soit un fichier pug
+    }catch(e){
+        res.status(500).send()
+    }
+}
+
+
+
+/*
+* PARTIE ROUTEUR
+*/
+
+//route to add a task
+app.post('/tasks', async (req, res) => {       
+    //appel du controller addTasks   
+    addTasks(req, res);
+})
+
+//route to get all tasks
+app.get('/tasks', async (req, res) => {    
+    //appel du controller getTasks
+    getTasks(req, res);
+})
+
+//route to add a user
+app.post('/users', async (req, res) => {  
+    //appel du controller addUsers
+    addUsers(req, res);
+})
+
+//route to get all users
+app.get('/users', async (req, res) => {
+    //appel du controller getUsers
+    getUsers(req, res);
+})
+
+
+/*
+* PARTIE FRONT - STATIC FILES
+*/
+    
 
 //code pour ajouter une page web front end
 //ici la difficulté est de trouver le chemin absolu du fichier index.html car le chemin relatif ne fonctionne pas avec express et node en mode module
@@ -72,10 +135,14 @@ const __dirname = dirname(__filename);
 const publishDirectoryPath = path.join(__dirname, '/public')
 
 
-//set public directory - Pas besoin de faire un app.get pour chaque fichier
+//Configuration du serveur avec un "set public directory" - Pas besoin de faire un app.get pour chaque fichier
 app.use(express.static(publishDirectoryPath))
 
-//lancement du serveur
+
+/*
+* lancement du serveur
+*/
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
