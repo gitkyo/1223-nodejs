@@ -4,4 +4,7 @@
 ```npm install```
 
 ## start
-```node app.js```
+```npm run start```
+
+## dev
+```npm run dev```
