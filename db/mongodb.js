@@ -1,11 +1,14 @@
 // CRUD create read update delete
 import mongoose from 'mongoose'
 
-//connexion à la BDD avec mongoose
-// mongoose.connect('mongodb://127.0.0.1:27017/task-manager', {});
-
-const url = 'mongodb://'+process.env.HOST+'/'+process.env.DBNAME;
-mongoose.connect(url, {})
+export const connectDB = async () => {
+    const url = 'mongodb://'+process.env.HOST+'/'+process.env.DBNAME;
+    try {
+        await mongoose.connect(url, { });
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 //Exemple de connexion à la BDD avec mongodb 
 

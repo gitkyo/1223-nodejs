@@ -10,7 +10,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 //import DB manager file
-import('./db/mongodb.js');
+import {connectDB} from './db/mongodb.js';
+connectDB();
 
 //create express app
 const app = express();
