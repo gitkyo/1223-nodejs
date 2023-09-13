@@ -22,38 +22,10 @@ const PORT = 8080;
 //config app to use/parse json
 app.use(express.json())
 
-/*
-* PARTIE CONTROLLER
-*/
+//on informe express qu'il utilise notre routeur
+import {taskRouter} from './routers/tasks.js';
+app.use(taskRouter)
 
-//creation d'un model de donnée pour les taches afin de faciliter l'ajout de données
-import {Task} from './models/tasks.js';
-
-//fonction pour ajouter une tache
-const addTasks = async (req, res) => {
-    
-    const task = new Task(req.body)
-
-    try{
-        await task.save()
-        res.status(201).send(task)       
-    }catch(e){
-        res.status(400).send(e)  
-    }
-
-}
-
-//fonction pour lire les taches
-const getTasks = async (req, res) => {
-    
-    try{
-        const tasks = await Task.find({})
-        res.send(tasks)
-        //Note : ici on pourrai éventuellement envoyer les données dans une vue à l'aide de moteur de template, soit un fichier ejs, soit un fichier pug
-    }catch(e){
-        res.status(500).send()
-    }
-}
 
 
 //import d'un model de donnée pour les users afin de faciliter l'ajout de données
@@ -86,24 +58,6 @@ const getUsers = async (req, res) => {
         res.status(500).send()
     }
 }
-
-
-
-/*
-* PARTIE ROUTEUR
-*/
-
-//route to add a task
-app.post('/tasks', async (req, res) => {       
-    //appel du controller addTasks   
-    addTasks(req, res);
-})
-
-//route to get all tasks
-app.get('/tasks', async (req, res) => {    
-    //appel du controller getTasks
-    getTasks(req, res);
-})
 
 //route to add a user
 app.post('/users', async (req, res) => {  
